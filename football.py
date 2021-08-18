@@ -8,3 +8,5 @@ class Desk():
     def __str__(self):
         rep=self.rang+self.suit
         return rep
+def fool():
+    pass

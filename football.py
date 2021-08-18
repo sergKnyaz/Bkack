@@ -10,3 +10,4 @@ class Desk():
         return rep
 def fool():
     pass
+

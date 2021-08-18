@@ -5,3 +5,6 @@ class Desk():
     def __init__(self,rang,suit):
         self.rang=rang
         self.suit=suit
+    def __str__(self):
+        rep=self.rang+self.suit
+        return rep

@@ -71,6 +71,8 @@ class Deck(Hand):
                     print('Карты закончились')
 
 
+
+
 deck = Deck()
 deck.populate()
 deck.shuffle()

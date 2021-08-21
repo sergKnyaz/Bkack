@@ -1,25 +1,33 @@
 class Card(object):
-    '''Класс отвечает за генерацию колоды и ее тасовку
+    """Класс отвечает за карты и перевернуты они или нет
     Suit- c(clubs)- трефыб d(diamonds)-буби, h(hearts)-червы, s(spades)- пики
-    '''
-    RANGS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
-    SUIT = ['-c-', '-d-', '-h-', '-s-']
+    """
+    RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
+    SUIT = ['c', 'd', 'h', 's']
 
-    def __init__(self, rang, suit):
+    def __init__(self, rang, suit, face_up=True):
         self.rang = rang
         self.suit = suit
+        self.face_up = face_up
 
     def __str__(self):
-        rep = self.rang + self.suit
+        if self.face_up:
+            rep = self.rang + self.suit
+        else:
+            rep = ('XX')
         return rep
+
+    def flip(self):
+        self.face_up = not self.face_up
 
 
 class Hand(object):
-    '''Рука: набор карт на руках одного игрока.
+    """Рука: набор карт на руках одного игрока.
+    возвращает набор карт
     clear - очищает список карт на руках
     add - добавляет карту на руки
     give - передает карту
-    '''
+    """
 
     def __init__(self):
         self.cards = []
@@ -28,7 +36,7 @@ class Hand(object):
         if self.cards:
             rep = ''
             for card in self.cards:
-                rep += str(card) + " "
+                rep += str(card) + "\t"
         else:
             rep = '<Пусто>'
         return rep
@@ -45,21 +53,21 @@ class Hand(object):
 
 
 class Deck(Hand):
-    '''Класс колода наследник Hand,
+    """Класс колода наследник Hand,
     populate - заполняем колоду
     shuffle - тасуем колоду
     deal - раздача карт
-    '''
+    """
 
     def populate(self):
         self.cards = []
         for suit in Card.SUIT:
-            for rang in Card.RANGS:
+            for rang in Card.RANKS:
                 self.add(Card(rang, suit))
 
     def shuffle(self):
         import random
-        random.shuffle(self.cards)  #####ЗАПОМНИТЬ
+        random.shuffle(self.cards)  # ЗАПОМНИТЬ
 
     def deal(self, hands, per_hand=1):
         for rounds in range(per_hand):
@@ -71,15 +79,6 @@ class Deck(Hand):
                     print('Карты закончились')
 
 
-
-
-deck = Deck()
-deck.populate()
-deck.shuffle()
-my_hand = Hand()
-your_hand = Hand()
-hands = [my_hand, your_hand]
-deck.deal(hands, per_hand=17)
-print(deck)
-print(my_hand)
-print(your_hand)
+if __name__ == '__main__':
+    print('Этот модуль используется для создания карточных игр')
+    input('Нажмите ENTER,что бы выйти')

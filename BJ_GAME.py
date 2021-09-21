@@ -106,4 +106,83 @@ class BJ_Dealer(BG_Hand):
 
 
 class BJ_Game(object):
-    """Игра"""
+    """Игра
+    syill_playing - Возвращает игроков оставшихся в игре(не перебравших очков)
+    __additional_cards - Сдает дополнительные карты игрокам и диллеру
+    """
+
+    def __init__(self, names):
+        self.players = []
+        for name in names:
+            player = BJ_Player(name+'\t')
+            self.players.append(player)
+        self.dealer = BJ_Dealer('Диллер\t')
+        self.deck = BJ_Deck()
+        self.deck.populate()
+        self.deck.shuffle()
+
+    @property
+    def still_playing(self):
+        sp = []
+        for player in self.players:
+            if not player.is_busted():
+                sp.append(player)
+        return sp
+
+    def __additional_cards(self, player):
+        while not player.is_busted() and player.is_hitting():
+            self.deck.deal([player])
+            print(player)
+            if player.is_busted(
+
+            ):
+                player.bust()
+
+    def playe(self):
+        # Сдача по 2 карты
+        self.deck.deal(self.players + [self.dealer], per_hand=2)
+        self.dealer.flip_first_card()  # переворачиваем карту диллера рубашкой вверх
+        for player in self.players:
+            print(player)
+        print(self.dealer)
+        for player in self.players:
+            self.__additional_cards(player)
+        self.dealer.flip_first_card()
+        if not self.still_playing:
+            print(self.dealer)
+        else:
+            print(self.dealer)
+            self.__additional_cards(self.dealer)
+            if self.dealer.is_busted():
+                for player in self.still_playing:
+                    player.win()
+            else:
+                for player in self.still_playing:
+                    if player.total > self.dealer.total:
+                        player.win()
+                    elif player.total < self.dealer.total:
+                        player.lost()
+                    else:
+                        player.push()
+        for player in self.players:
+            player.cler()
+        self.dealer.cler()
+
+
+def main():
+    print('Добро пожаловать в Блэк Джек')
+    names = []
+    number = games.ask_number('Сколько играков будет играть? 0т 1 до 7  ', low=1, high=7)
+    for i in range(number):
+        name = input('Введите ваше имя: ')
+        names.append(name)
+        print()
+    game = BJ_Game(names)
+    again = None
+    while again != 'n':
+        game.playe()
+        again = games.ask_yes_no('Хотите ещё партию? y/n   ')
+        main()
+
+
+main()

@@ -43,7 +43,7 @@ class P_Hand(cards.Hand):
         return rep
     @property
     def peredelai(self):
-        s=trim.Sov_Rang(self.total)
+        s=trim.Sov_Rang(self.total_rang)
         d=s.gih()
         rep=''
         max=d[0]
@@ -64,15 +64,22 @@ class P_Hand(cards.Hand):
 
 
     @property
-    def total(self):
+    def total_rang(self):
         total=[]
         for card in self.cards:
             total.append(card.rang_value)
         for car in self.table:
             total.append(car.rang_value)
-
         return total
 
+    @property
+    def total_suit(self):
+        total=[]
+        for card in self.cards:
+            total.append(card.suit_value)
+        for car in self.table:
+            total.append(car.suit_value)
+        return total
 
 class P_Playr(P_Hand):
     

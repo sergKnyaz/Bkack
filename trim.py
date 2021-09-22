@@ -36,17 +36,22 @@ class Sov_Rang():
                     ret+=1
             if max<ret:
                 max=ret
+                q=r
                 r=p
+                dir2=[max,r]
             elif max==ret:
-                if r<p:r=p
+                if r<p:
+                    q=r
+                    r=p
+                    dir2=[max,q]
         if max==1:max=0
         dyr=[max,r]
-        return dyr
+        return dyr,dir2
             
     
    
-a=Sov_Rang([2,1])
-print(a.gih())
+# a=Sov_Rang([1,1,2,2,3,3,4])
+# print(a.gih())
 
 
 #print(qsort([23,12]))

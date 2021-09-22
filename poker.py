@@ -4,7 +4,7 @@ class P_Cart(cards.Card):
     @property
     def rang_value(self):
         r=P_Cart.RANKS.index(self.rang)+1
-        if r==1:r=13
+        if r==1:r=14
         return r
     @property
     def suit_value(self):
@@ -12,16 +12,24 @@ class P_Cart(cards.Card):
         return s
 
 class P_Deck(cards.Deck):
+
     '''колода для игры'''
     def populate(self):
         for suit in P_Cart.SUIT:
             for rang in P_Cart.RANKS:
                 self.cards.append(P_Cart(rang,suit))
 
-class P_Hand(cards.Hand):
+class P_Table(cards.Hand):
     '''набор карт на руках игрока'''
     def __init__(self,name):
         super().__init__()
+        self.name=name
+
+class P_Hand(cards.Hand):
+    '''набор карт на руках игрока'''
+    def __init__(self,name,table):
+        super().__init__()
+        self.table=table
         self.name=name
     
     def __str__(self):
@@ -49,6 +57,9 @@ class P_Hand(cards.Hand):
         total=[]
         for card in self.cards:
             total.append(card.rang_value)
+        for car in self.table:
+            total.append(car.rang_value)
+
         return total
 
 
@@ -65,10 +76,10 @@ class P_Game():
 
     def __init__(self,names):
         self.players=[]
+        self.table=P_Table("на столе")
         for name in names:
-            player=P_Playr(name)
+            player=P_Playr(name,self.table.cards)
             self.players.append(player)
-        self.table=P_Hand("на столе")
         self.deck=P_Deck()
         self.deck.populate()
         self.deck.shuffle()
@@ -86,11 +97,11 @@ class P_Game():
         for player in self.players:
             print(player)
         print(self.table)
-        for player in self.players:
-            sps=[]
-            sps.append(player.total)
-            sps+=self.table.total
-            print(player.peredelai())
+        # for player in self.players:
+        #     sps=[]
+        #     sps.append(player.total)
+        #     sps+=self.table.total2
+        #     print(player.peredelai())
 
 def main():
     print('добро пожаловать в игру Poker')

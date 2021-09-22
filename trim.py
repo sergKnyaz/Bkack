@@ -36,7 +36,7 @@ class Sov_Rang():
                     ret+=1
             if max<ret:
                 max=ret
-                r=0
+                r=p
             elif max==ret:
                 if r<p:r=p
         if max==1:max=0
@@ -45,7 +45,7 @@ class Sov_Rang():
             
     
    
-a=Sov_Rang([2,4,3,2,2,4,4,2,2,3,3,3,3,19,4,4])
+a=Sov_Rang([2,1])
 print(a.gih())
 
 

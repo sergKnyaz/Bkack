@@ -133,9 +133,7 @@ class BJ_Game(object):
         while not player.is_busted() and player.is_hitting():
             self.deck.deal([player])
             print(player)
-            if player.is_busted(
-
-            ):
+            if player.is_busted():
                 player.bust()
 
     def playe(self):

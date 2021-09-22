@@ -77,6 +77,7 @@ class Deck(Hand):
                     self.give(top_card, hand)
                 else:
                     print('Карты закончились')
+                    
 
 
 if __name__ == '__main__':

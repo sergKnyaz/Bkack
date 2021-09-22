@@ -25,6 +25,10 @@ class P_Table(cards.Hand):
         super().__init__()
         self.name=name
 
+    def __str__(self):
+        rep=self.name+':  '+super().__str__()
+        return rep
+
 class P_Hand(cards.Hand):
     '''набор карт на руках игрока'''
     def __init__(self,name,table):
@@ -42,13 +46,20 @@ class P_Hand(cards.Hand):
         s=trim.Sov_Rang(self.total)
         d=s.gih()
         rep=''
-        for t in d:
-            if t>1:
-                if t==11:t='J'
-                elif t==12:t='Q'
-                elif t==13:t='K'
-                elif t==14:t='A'
-                rep+=str(t)+' '
+        max=d[0]
+        rang=d[1]
+        if rang==11:rang='J'
+        elif rang==12:rang='Q'
+        elif rang==13:rang='K'
+        elif rang==14:rang='A'
+        if max==0:
+            rep+='Старшая карта '+f'{rang}'
+        elif max==2:
+            rep+='Пара на '+f'{rang}'
+        elif max==3:
+            rep+='Тройка '+f'{rang}'
+        elif max==4:
+            rep+='Каре '+f'{rang}'
         return rep
 
 
@@ -105,12 +116,12 @@ class P_Game():
 
 def main():
     print('добро пожаловать в игру Poker')
-    names=[]
-    numbers=games.ask_number('сколько играков будет играть?   ',low=2,high=6)
-    for i in range(numbers):
-        name=input('Введите имя   ')
-        names.append(name)
-        print()
+    names=['Жорик','Бородач','Равшан','Джумшут','Вася']
+    # numbers=games.ask_number('сколько играков будет играть?   ',low=2,high=6)
+    # for i in range(numbers):
+    #     name=input('Введите имя   ')
+    #     names.append(name)
+    print()
     game=P_Game(names)
     alain=None
     while alain!='n':

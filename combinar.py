@@ -1,17 +1,17 @@
 
-a=[[1,5,3,2,5,7,6],[1,3,1,3,2,4,4]] # пара
-b=[[1,3,2,2,1,3,6],[1,3,1,3,2,4,4]] #2 пары
-c=[[3,4,3,7,3,1,6],[1,3,1,3,2,4,4]] # тройка
-d=[[5,3,4,1,2,9,8],[1,3,1,3,2,4,4]] #strit
-e=[[1,3,2,2,1,3,6],[3,3,3,2,3,2,3]] #flesh
-f=[[1,2,1,2,1,3,4],[1,3,1,3,2,4,4]] #fulhaus
-g=[[1,4,1,4,4,4,1],[2,3,4,1,2,3,4]]
-h=[[8,9,4,7,10,6,3],[1,3,1,3,1,1,1]] #strit flesh
-i=[[14,13,12,4,10,11,2],[3,3,3,2,3,1,3]]  #flesh royal
+# a=[[1,5,3,2,5,7,6],[1,3,1,3,2,4,4]] # пара
+# b=[[1,3,2,2,1,3,6],[1,3,1,3,2,4,4]] #2 пары
+# c=[[3,4,3,7,3,1,6],[1,3,1,3,2,4,4]] # тройка
+# d=[[5,3,4,1,2,9,8],[1,3,1,3,2,4,4]] #strit
+# e=[[1,3,2,2,1,3,6],[3,3,3,2,3,2,3]] #flesh
+# f=[[1,2,1,2,1,3,4],[1,3,1,3,2,4,4]] #fulhaus
+# g=[[1,4,1,4,4,4,1],[2,3,4,1,2,3,4]]
+# h=[[8,9,4,7,10,6,3],[1,3,1,3,1,1,1]] #strit flesh
+# i=[[14,13,12,4,10,11,2],[3,3,3,2,3,1,3]]  #flesh royal
 
 
 class Sov_Rang():
-
+    '''ПРИНИМАЕТ ДВУМЕРНЫЙ СПИСОК'''
     def __init__(self,sp_kart):
         self.sp_kart=sp_kart
 
@@ -38,6 +38,8 @@ class Sov_Rang():
             return sp
 
     def gih(self,sps):
+        '''ВОЗВРАЩАЕТ СОВПАДЕНИЯ И ИХ КОЛИЧЕСТВОБ
+         ЕСЛИ СОВПАДЕНИИ 2 ТО ВОЗВРАЩАЕТ ОБА'''
         max=0
         r=0
         for i in sps:
@@ -60,7 +62,17 @@ class Sov_Rang():
         dyr=[max,r]
         return dyr,dir2
 
+    def fullhaus(self,sps):
+        '''ДЛЯ ФУЛЛ ХАУС'''
+        s_sps=self.gih(sps)
+        for i in sps:
+            if s_sps[0][1] in sps:sps.remove(s_sps[0][1])
+        s_sps2=self.gih(sps)
+        if s_sps2[0][0]==2:return True
+        
+
     def poporyadku(self,sps):
+        '''ДЛЯ ПРОВЕРКИ КАРТ ПО ПОРЯДКУ(1,2,3,4,5) И ТД ВОЗВРАЩАЕТ ПРИ 5 КАРТАХ ПО ПОРЯДКУ'''
         r=0
         rez=0
         for i in range(len(sps)):
@@ -74,48 +86,81 @@ class Sov_Rang():
         
         return rez
 
+    def rang_smena_znach(self,d):
+        if d==11:d='J'
+        elif d==12:d='Q'
+        elif d==13:d='K'
+        elif d==14:d='A'
+        return d
 
-    def total_rang(self):
-        '''пара-1, две пары-2, тройка-3, каре-7'''
+    def total_ran(self):
+        '''ПРОВЕРКА НА КОМБИНАЦИИ В ПОКЕРЕ'''
         sort_rang=self.qsort(self.sp_kart[0])
         sort_suit=self.qsort(self.sp_kart[1])
-        print(sort_rang,sort_suit)
         sovp_rang=self.gih(sort_rang)
         sovp_suit=self.gih(sort_suit)
-        print(sovp_rang,sovp_suit)
-        
+
+        combo=''
         #flesh royal
         if self.poporyadku(sort_rang)==1 and sovp_suit[0][0]>3:
-            print('flash royal')
+            combo+=('---------ФЛЭШ РОЯЛ---')
+        # flesh street
         elif self.poporyadku(sort_rang)==2 and sovp_suit[0][0]>3:
-            print('flash strit')
+            combo+=('---------ФЛЭШ СТРИТ')
+        # kare
+        elif sovp_rang[0][0]==4:
+            d=self.rang_smena_znach(sovp_rang[0][1])
+            combo+=('--------КАРЕ НА '+str(d))
+        # ful haus
+        elif sovp_rang[0][0]==3 and self.fullhaus(sort_rang): combo+=('---Фул хаус---')
+        # flesh
+        elif sovp_suit[1][0]>4: combo+=('---Флэш---')
+        # street
+        elif self.poporyadku(sort_rang)>0: combo+=('---Стрит---')
+        # dreier
+        elif sovp_rang[1][0]==3:
+            d=self.rang_smena_znach(sovp_rang[0][1])
+            combo+=('Тройка на '+str(d))
+        # duppel
+        elif sovp_rang[0][0]==2 and sovp_rang[0][1]!=sovp_rang[1][1]:
+            d=self.rang_smena_znach(sovp_rang[0][1])
+            d2=self.rang_smena_znach(sovp_rang[1][1])
+            combo+=('Две пары:  '+str(d)+' и '+str(d2))
+        # para
+        elif sovp_rang[1][0]==2:
+            d=self.rang_smena_znach(sovp_rang[0][1])
+            combo+=('Пара на '+str(d))
+        elif sovp_rang[1][0]==1:
+            d=self.rang_smena_znach(sovp_rang[0][1])
+            combo+='Старшая карта  '+ str(d)
+        return combo
 
 
 
 
-para=Sov_Rang(a)
-para.total_rang()
-print()
-tupara=Sov_Rang(b)
-tupara.total_rang()
-print()
-troic=Sov_Rang(c)
-troic.total_rang()
-print()
-strit=Sov_Rang(d)
-strit.total_rang()
-print()
-flash=Sov_Rang(e)
-flash.total_rang()
-print()
-fulhaus=Sov_Rang(f)
-fulhaus.total_rang()
-print()
-kare=Sov_Rang(g)
-kare.total_rang()
-print()
-strit_flash=Sov_Rang(h)
-strit_flash.total_rang()
-print()
-flash_royal=Sov_Rang(i)
-flash_royal.total_rang()
+# para=Sov_Rang(a)
+# para.total_ran()
+# print()
+# tupara=Sov_Rang(b)
+# tupara.total_ran()
+# print()
+# troic=Sov_Rang(c)
+# troic.total_ran()
+# print()
+# strit=Sov_Rang(d)
+# strit.total_ran()
+# print()
+# flash=Sov_Rang(e)
+# flash.total_ran()
+# print()
+# fulhaus=Sov_Rang(f)
+# fulhaus.total_ran()
+# print()
+# kare=Sov_Rang(g)
+# kare.total_ran()
+# print()
+# strit_flash=Sov_Rang(h)
+# strit_flash.total_ran()
+# print()
+# flash_royal=Sov_Rang(i)
+# flash_royal.total_ran()

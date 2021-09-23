@@ -42,5 +42,5 @@ class Player():
 
 a=Player()
 print(a.lvl)
-a.lvl='r'
+a.lvl=2
 print(a.lvl)

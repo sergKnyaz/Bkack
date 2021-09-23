@@ -1,4 +1,4 @@
-import cards, games,trim
+import cards, games,combinar
 
 class P_Cart(cards.Card):
     @property
@@ -39,48 +39,24 @@ class P_Hand(cards.Hand):
     def __str__(self):
         rep=self.name+':  '+super().__str__()
     
-        rep+='('+str(self.peredelai)+')'
+        rep+='('+str(self.total_rang)+')'
         return rep
-    @property
-    def peredelai(self):
-        s=trim.Sov_Rang(self.total_rang)
-        d=s.gih()
-        rep=''
-        max=d[0]
-        rang=d[1]
-        if rang==11:rang='J'
-        elif rang==12:rang='Q'
-        elif rang==13:rang='K'
-        elif rang==14:rang='A'
-        if max==0:
-            rep+='Старшая карта '+f'{rang}'
-        elif max==2:
-            rep+='Пара на '+f'{rang}'
-        elif max==3:
-            rep+='Тройка '+f'{rang}'
-        elif max==4:
-            rep+='Каре '+f'{rang}'
-        return rep
-
-
+   
     @property
     def total_rang(self):
-        total=[]
+        total=[[],[]]
         for card in self.cards:
-            total.append(card.rang_value)
+            total[0].append(card.rang_value)
         for car in self.table:
-            total.append(car.rang_value)
-        return total
-
-    @property
-    def total_suit(self):
-        total=[]
+            total[0].append(car.rang_value)
         for card in self.cards:
-            total.append(card.suit_value)
+            total[1].append(card.suit_value)
         for car in self.table:
-            total.append(car.suit_value)
-        return total
+            total[1].append(car.suit_value)
+        rezul=combinar.Sov_Rang(total)
+        return rezul.total_ran()
 
+# None
 class P_Playr(P_Hand):
     
     def win(self):
@@ -101,6 +77,8 @@ class P_Game():
         self.deck=P_Deck()
         self.deck.populate()
         self.deck.shuffle()
+    
+    # None
     @property
     def still_player(self,player):
         sp=[]
@@ -115,11 +93,7 @@ class P_Game():
         for player in self.players:
             print(player)
         print(self.table)
-        # for player in self.players:
-        #     sps=[]
-        #     sps.append(player.total)
-        #     sps+=self.table.total2
-        #     print(player.peredelai())
+       
 
 def main():
     print('добро пожаловать в игру Poker')

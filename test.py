@@ -1,4 +1,4 @@
-import trim,cards,random
+import cards,random
 from datetime import datetime as dt
 # a=[8,8,1,7,3,9,2,2,5,1,7,7,9,9,6,7,7,6,5,0,5,1,1,1,9,8,4,33,64,0,8,68]
 # b=[98,34]

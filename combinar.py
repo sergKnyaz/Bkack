@@ -1,4 +1,3 @@
-
 # a=[[1,5,3,2,5,7,6],[1,3,1,3,2,4,4]] # пара
 # b=[[1,3,2,2,1,3,6],[1,3,1,3,2,4,4]] #2 пары
 # c=[[3,4,3,7,3,1,6],[1,3,1,3,2,4,4]] # тройка
@@ -6,7 +5,7 @@
 # e=[[1,3,2,2,1,3,6],[3,3,3,2,3,2,3]] #flesh
 # f=[[1,2,1,2,1,3,4],[1,3,1,3,2,4,4]] #fulhaus
 # g=[[1,4,1,4,4,4,1],[2,3,4,1,2,3,4]]
-# h=[[8,9,4,7,10,6,3],[1,3,1,3,1,1,1]] #strit flesh
+# h=[[2,3,4,4,5,6,7],[1,3,1,3,1,1,2]] #strit flesh
 # i=[[14,13,12,4,10,11,2],[3,3,3,2,3,1,3]]  #flesh royal
 
 
@@ -86,6 +85,17 @@ class Sov_Rang():
         
         return rez
 
+    def suit_flash(self,sps,sps2):
+        if self.poporyadku(sps)>0:
+            r=0
+            for i in range(len(sps)):
+                if (sps[i-1]==(sps[i]-1)):
+                    if sps2[i-1]==sps2[i]:
+                        r+=1
+            return r
+
+                
+
     def rang_smena_znach(self,d):
         if d==11:d='J'
         elif d==12:d='Q'
@@ -102,10 +112,10 @@ class Sov_Rang():
 
         combo=''
         #flesh royal
-        if self.poporyadku(sort_rang)==1 and sovp_suit[0][0]>3:
+        if self.poporyadku(sort_rang)==1 and self.suit_flash(sort_rang,sort_suit)>3:
             combo+=('---------ФЛЭШ РОЯЛ---')
         # flesh street
-        elif self.poporyadku(sort_rang)==2 and sovp_suit[0][0]>3:
+        elif self.poporyadku(sort_rang)==2 and self.suit_flash(sort_rang,sort_suit)>3:
             combo+=('---------ФЛЭШ СТРИТ')
         # kare
         elif sovp_rang[0][0]==4:
@@ -139,7 +149,7 @@ class Sov_Rang():
 
 
 # para=Sov_Rang(a)
-# para.total_ran()
+# print(para.total_ran())
 # print()
 # tupara=Sov_Rang(b)
 # tupara.total_ran()
@@ -160,7 +170,8 @@ class Sov_Rang():
 # kare.total_ran()
 # print()
 # strit_flash=Sov_Rang(h)
-# strit_flash.total_ran()
+# print(strit_flash.total_ran())
+#print(strit_flash.suit_flash())
 # print()
 # flash_royal=Sov_Rang(i)
-# flash_royal.total_ran()
+# print(flash_royal.total_ran())

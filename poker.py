@@ -56,6 +56,7 @@ class P_Hand(cards.Hand):
         rezul=combinar.Sov_Rang(total)
         return rezul.total_ran()
 
+    
 # None
 class P_Playr(P_Hand):
     

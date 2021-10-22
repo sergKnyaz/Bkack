@@ -1,55 +1,66 @@
 from tkinter import *
+from random import shuffle
 
-sdano = []
+class Gui():
+    def __init__(self):
+        self.cardIpg = []
+        self.dataImage=[i for i in range(52)]
+        self.lblImage = []
+        self.game1=[]
+        self.root=Tk()
 
+        
+    def table():
+        pass
 
-def go(x):
-    global sdano, lblImage, dataImage
-    n = 0
-    dataImage.pop(x)
+    def win(self):
+        self.root.geometry('1000x1000')
+        fon = PhotoImage(file='cards_52/table.png')
+        fon=fon.zoom(2,2)
+        Label(self.root, image=fon).place(x=-2, y=0)
 
-    sdano.append(x)
-    sdanoIpg = []
-    for i in range(len(sdano)):
-        sdanoIpg.append(Label(root))
-        sdanoIpg[i].place(x=10 + n, y=100)
-        n += 8
-        sdanoIpg[i]['image'] = cardImg[sdano[i]]
-    m=0
-    lblImage = []
+        
+        for jpg in range(1, 53):
+            self.cardIpg.append(PhotoImage(file='cards_52/cards_' + str(jpg) + '.png'))
+            self.cardIpg[jpg-1]=self.cardIpg[jpg-1].zoom(2,2)
+        shuffle(self.dataImage)
+        self.gui()
+        self.root.mainloop()
 
-    for j in range(len(dataImage)):
+    def go(self,x):
+        self.game1.append(self.dataImage[x])
+        self.dataImage.pop(x)
+        print(self.game1)
+        for i in self.lblImage:
+            i.destroy()
+        self.gui()
 
-        lblImage.append(Label(root))
-        lblImage[j].place(x=10 + m, y=250)
-        m += 8
-        lblImage[j].bind('<Button-1>', lambda e, x=j: go(x))
-        lblImage[j]['image'] = cardImg[dataImage[j]]
-        root.update()
+    def  go2(self,x):
+        maus_x=self.root.winfo_pointerx()-self.root.winfo_rootx()
+        maus_y=self.root.winfo_pointery()-self.root.winfo_rooty()
+        self.lblImage[x].place(x=maus_x,y=maus_y,anchor=CENTER)
+        
 
+    def gui(self):
+        #shuffle(self.cardIpg)
+       
+        n=0
+        m=0
+        self.lblImage=[]
 
-def table():
-    pass
+        # self.dataImage.append()
+        for i in range(len(self.dataImage)):
+            self.lblImage.append(Label(self.root))
+            if i<26:
+                self.lblImage[i].place(x=10 + n, y=250)
+                n+=15
+            else:
+                self.lblImage[i].place(x=10 + m, y=350)
+                m+=15
+            #self.lblImage[i].bind('<Button-1>', lambda e, x=i: self.go(x))
+            self.lblImage[i].bind('<B1-Motion>', lambda e,x=i: self.go2(x))
+            self.lblImage[i]['image'] = self.cardIpg[self.dataImage[i]]
+        print(self.dataImage)
 
-
-root = Tk()
-root.geometry('500x500')
-fon = PhotoImage(file='cards_52/table.png')
-Label(root, image=fon).place(x=-2, y=0)
-
-cardImg = []
-for jpg in range(1, 53):
-    cardImg.append(PhotoImage(file='cards_52/cards_' + str(jpg) + '.png'))
-
-lblImage = []
-dataImage = [i for i in range(52)]
-
-
-# dataImage.append()
-# lblImage.append(Label(root))
-# lblImage[i].place(x=10 + n, y=250)
-# lblImage[i].bind('<Button-1>', lambda e, x=i: go(x))
-# lblImage[i]['image'] = cardImg[dataImage[i]]
-print(dataImage)
-
-root.mainloop()
+a=Gui()
+a.win()

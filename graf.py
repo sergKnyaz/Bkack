@@ -4,7 +4,7 @@ from random import shuffle
 class Gui():
     def __init__(self):
         self.cardIpg = []
-        self.dataImage=[i for i in range(52)]
+        self.dataImage=[i for i in range(36)]
         self.lblImage = []
         self.game1=[]
         self.root=Tk()
@@ -15,15 +15,16 @@ class Gui():
 
     def win(self):
         self.root.geometry('1000x1000')
-        fon = PhotoImage(file='cards_52/table.png')
+        fon = PhotoImage(file='cards_36/table.png')
         fon=fon.zoom(2,2)
         Label(self.root, image=fon).place(x=-2, y=0)
 
         
-        for jpg in range(1, 53):
-            self.cardIpg.append(PhotoImage(file='cards_52/cards_' + str(jpg) + '.png'))
-            self.cardIpg[jpg-1]=self.cardIpg[jpg-1].zoom(2,2)
-        shuffle(self.dataImage)
+        for jpg in range(36):
+            self.cardIpg.append(PhotoImage(file='cards_36/cards_' + str(jpg) + '.png'))
+            self.cardIpg[jpg]=self.cardIpg[jpg].zoom(3,3)
+            self.cardIpg[jpg]=self.cardIpg[jpg].subsample(2,2)
+        #shuffle(self.dataImage)
         self.gui()
         self.root.mainloop()
 
@@ -42,7 +43,7 @@ class Gui():
         
 
     def gui(self):
-        #shuffle(self.cardIpg)
+        shuffle(self.cardIpg)
        
         n=0
         m=0
@@ -51,12 +52,12 @@ class Gui():
         # self.dataImage.append()
         for i in range(len(self.dataImage)):
             self.lblImage.append(Label(self.root))
-            if i<26:
+            if i<18:
                 self.lblImage[i].place(x=10 + n, y=250)
-                n+=15
+                n+=50
             else:
-                self.lblImage[i].place(x=10 + m, y=350)
-                m+=15
+                self.lblImage[i].place(x=10 + m, y=400)
+                m+=50
             #self.lblImage[i].bind('<Button-1>', lambda e, x=i: self.go(x))
             self.lblImage[i].bind('<B1-Motion>', lambda e,x=i: self.go2(x))
             self.lblImage[i]['image'] = self.cardIpg[self.dataImage[i]]
